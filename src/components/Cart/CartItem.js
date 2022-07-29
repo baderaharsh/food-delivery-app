@@ -1,9 +1,27 @@
 import { Fragment } from 'react';
-import classes from './CartItem.module.css'
+import classes from './CartItem.module.css';
 
 const CartItem = props => {
-    return <Fragment>
 
+    const addToCart = () => {
+        props.addCart({ ...props.item, amount: props.item.amount + 1 });
+    }
+
+    const removeFromCart = () => {
+        console.log("Called removeFromCart")
+
+        const amount = props.item.amount - 1;
+
+        if (amount > 0) {
+            console.log("Amount is greater than 0, hence adding -1 : " + amount)
+            props.addCart({ ...props.item, amount: amount });
+        } else {
+            console.log("Found amount before removing : " + amount)
+            props.removeItem(props.item.id);
+        }
+    }
+
+    return <Fragment>
      <li className={classes.list}>
         <div>
             <h3>
@@ -19,8 +37,8 @@ const CartItem = props => {
             </div>
         </div>
         <div className={classes.buttons}>
-            <button className={`${classes.button} ${classes.negative}`}>-</button>
-            <button className={classes.button}>+</button>
+            <button className={`${classes.button} ${classes.negative}`} onClick={removeFromCart} >-</button>
+            <button className={classes.button} onClick={addToCart} >+</button>
         </div>
         </li>
         <hr className={classes.bottom} />

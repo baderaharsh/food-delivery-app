@@ -7,21 +7,33 @@ const defaultCartState = {
 }
 
 const cartReducer = (state, action) => {
-
     if (action.type === "ADD") {
         if (state.items.findIndex(item => item.id === action.item.id) < 0) {
             const newCartItems = state.items.concat(action.item);
             const totalAmount = state.totalAmount + action.item.amount * action.item.price;
             return { items: newCartItems, totalAmount: totalAmount };
         } else {
-
             const itemIndex = state.items.findIndex(item => item.id === action.item.id);
+            state.totalAmount = state.totalAmount - state.items[itemIndex].amount * state.items[itemIndex].price;
             state.items[itemIndex].amount = action.item.amount;
             state.totalAmount = state.totalAmount + action.item.amount * action.item.price;
-            return state;
+
+            const element = document.getElementById(state.items[itemIndex].id);
+
+            element.value = state.items[itemIndex].amount;
+
+            return {
+                ...state
+            };
         }
         
+    } else if (action.type === "REMOVE") {
+        const itemIndex = state.items.findIndex(item => item.id === action.id);
+        state.totalAmount = state.totalAmount - state.items[itemIndex].amount * state.items[itemIndex].price;
+        state.items.splice(itemIndex, 1);
+        return { ...state };
     }
+
     return defaultCartState;
 }
 
@@ -36,7 +48,12 @@ const CartProvider = props => {
         });
     }
     
-    const removeItemFromCart = id => { }
+    const removeItemFromCart = id => { 
+        dispatchCartAction({
+            type: 'REMOVE',
+            id: id
+        });
+    }
 
     const cartContext = {
         items: cartState.items,

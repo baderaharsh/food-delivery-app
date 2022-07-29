@@ -1,11 +1,13 @@
 import Input from '../../UI/Input'
 import classes from './MealForm.module.css'
-import {useRef } from 'react'
+import { useRef } from 'react'
+// import CartContext from '../../store/cart-context';
 
 
 const MealForm = props => {
     
     const inputRef = useRef()
+
 
     const addToCartHandler = (event) => {
         event.preventDefault();

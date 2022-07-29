@@ -9,8 +9,18 @@ const Cart = props => {
 
     const cartCtx = useContext(CartContext);
 
+    const addToCart = (item) => {
+        cartCtx.addItem(item);
+    }
+
+    const removeFromCart = (id) => {
+        cartCtx.removeItem(id);
+    }
+
     const cartItems = <ul className={classes.list}>{cartCtx.items
-        .map(item => <CartItem item={item} />)}
+        .map(item => {
+            return <CartItem key={item.id} item={item} addCart={addToCart} removeItem={removeFromCart} />
+        } )}
     </ul>
     return <Modal onClose={props.onCloseCart}>
         {cartItems}
@@ -19,7 +29,7 @@ const Cart = props => {
                 Total
             </span>
             <span>
-                35.99
+                {cartCtx.totalAmount.toFixed(2)}
             </span>
         </div>
         <div className={classes.buttons}>
