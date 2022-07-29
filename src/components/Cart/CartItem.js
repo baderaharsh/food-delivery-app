@@ -8,15 +8,11 @@ const CartItem = props => {
     }
 
     const removeFromCart = () => {
-        console.log("Called removeFromCart")
-
         const amount = props.item.amount - 1;
 
         if (amount > 0) {
-            console.log("Amount is greater than 0, hence adding -1 : " + amount)
             props.addCart({ ...props.item, amount: amount });
         } else {
-            console.log("Found amount before removing : " + amount)
             props.removeItem(props.item.id);
         }
     }
